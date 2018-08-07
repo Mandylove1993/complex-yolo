@@ -65,10 +65,10 @@ class region(nn.Module):
         for i in range(self.num):
             index = t.arange(i*len_per_anchor, (i+1)*len_per_anchor, 1)
             index = index.type(t.LongTensor)
-            index1 = t.LongTensor([0,1])
-            index_wh = t.LongTensor([2,3])
-            index2 = t.LongTensor([4])
-            index3 = t.arange(5, len_per_anchor, 1)
+            index1 = t.LongTensor([0,1])#x,y
+            index_wh = t.LongTensor([2,3,4,5])#w,h,im,re
+            index2 = t.LongTensor([6])
+            index3 = t.arange(7, len_per_anchor, 1)
             index3 = index3.type(t.LongTensor)
             if x.is_cuda:
                 index = index.cuda()
@@ -91,7 +91,7 @@ class region(nn.Module):
             outlist.append(out_buf)
         output = t.cat(outlist, 1)
         return output
-        
+'''        
 class yolo(nn.Module):
     def __init__(self, classes, num, mask, anchors, ignore_thresh):
         super(yolo, self).__init__()
