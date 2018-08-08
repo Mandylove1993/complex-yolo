@@ -1,0 +1,6 @@
+classes= 8
+train=/raid/Kitti/data_object_bev_velodyne/train.txt
+valid = /raid/Kitti/data_object_bev_velodyne/valid.txt
+names = dataset/kitti.names
+backup = backup
+eval=kitti

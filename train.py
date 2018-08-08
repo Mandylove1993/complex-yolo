@@ -18,13 +18,13 @@ import numpy as np
 
 def parse_args():
     parser = argparse.ArgumentParser(description='train a network')
-    parser.add_argument('--dataset',help='training set config file',default='dataset/coco.data',type=str)
-    parser.add_argument('--netcfg',help='the network config file',default='cfg/yolov2.cfg',type=str)
-    parser.add_argument('--weight',help='the network weight file',default='backup/yolov2.backup',type=str)
+    parser.add_argument('--dataset',help='training set config file',default='dataset/kitti.data',type=str)
+    parser.add_argument('--netcfg',help='the network config file',default='cfg/complex-yolo.cfg',type=str)
+    parser.add_argument('--weight',help='the network weight file',default='backup/complex-yolo.backup',type=str)
     parser.add_argument('--vis',help='visdom the training process',default=1,type=int)
     parser.add_argument('--init',help='initialize the network parameter',default=0,type=int)
-    parser.add_argument('--cuda',help='use the GPU',default=0,type=int)
-    parser.add_argument('--ngpus',help='use mult-gpu',default=0,type=int)
+    parser.add_argument('--cuda',help='use the GPU',default=1,type=int)
+    parser.add_argument('--ngpus',help='use mult-gpu',default=1,type=int)
     args = parser.parse_args()
     return args
 
@@ -197,7 +197,8 @@ if __name__ == '__main__':
                     vis.line(loss_coords,X=np.array([0]),win='loss_coords',opts=dict(title='coords_loss'))
                     vis.line(loss_classes,X=np.array([0]),win='loss_classes',opts=dict(title='classes_loss'))
         weightname = backupdir + '/' + netname + '-epoch' + str(j) + '.weight'
-        model.save_weights(weightname)
+        if j%40 == 0:
+            model.save_weights(weightname)
         iou_epoch = iou_epoch / timesPerEpoch
         class_epoch = class_epoch / timesPerEpoch
         obj_epoch = obj_epoch / timesPerEpoch
