@@ -14,7 +14,7 @@ files = os.listdir(file_path)
 img_path = "/home/zft/velodyne/img/"
 #newbin_path = "/home/zft/velodyne/newbin/"
 #雷达扫射的最远距离
-range_l = 40
+range_l = 80
 #雷达扫射的最大宽度范围
 width = 80
 #循环读取文件
@@ -24,21 +24,21 @@ for binfile in files:
     a = np.fromfile(f,dtype=np.float32)#获取二进制文件信息
     col = 4
     row = int(len(a)/col)
-    a = np.reshape(a,(row,col))#排成512行1024列，每4个数为一行
-    r=np.zeros((512,1024))
-    g=np.zeros((512,1024))
-    b=np.zeros((512,1024))
+    a = np.reshape(a,(row,col))#排成1024行1024列，每4个数为一行
+    r=np.zeros((1024,1024))
+    g=np.zeros((1024,1024))
+    b=np.zeros((1024,1024))
     #循环读取一行
     for i in range(row):
         if 0<a[i][0]<range_l and -(width/2)<a[i][1]<(width/2) and -2<a[i][2]<1.25:#获取符合条件的数据点
             n = 1023-int((a[i][1]+(width/2))*1024/width)#将雷达坐标转为图像坐标
-            m = 511-int(a[i][0]*512/range_l)
+            m = 1023-int(a[i][0]*1024/range_l)
             r[m][n] =r[m][n] + 1
             if g[m][n] < a[i][2]:
                 g[m][n] = a[i][2]
             if b[m][n] < a[i][3]:
                 b[m][n] = a[i][3]
-    for i in range(512):
+    for i in range(1024):
         for j in range(1024):
             r[i][j]=np.log10(r[i][j]+1)/64
             if r[i][j]>1.0:

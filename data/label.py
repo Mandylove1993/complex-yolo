@@ -9,9 +9,9 @@ import pandas as pd
 import cv2
 
 width = 80
-range_l = 40
+range_l = 80
 #文件打开和保存路径
-file_path = "/home/zft/velodyne/label_test/"
+file_path = "/home/zft/velodyne/label_2/"
 save_path = '/home/zft/velodyne/labels/'
 files = os.listdir(file_path)
 #循环读取文件
@@ -63,15 +63,15 @@ for labelfile in files:
             #将相机坐标系转为雷达坐标系
             v_x = z + 0.27
             v_y = - x 
-            if 0 < z <(range_l-0.27) and  -range_l < x < range_l and -1.25 < y <2 :#在相机坐标系下选择符合条件的点，并计算归一化值
+            if 0 < z <(range_l-0.27) and  -(width/2)< x < (width/2) and -1.25 < y <2 :#在相机坐标系下选择符合条件的点，并计算归一化值
                 bc.append(class_name)
-                im_y = (1023-int((v_y + (width/2))*1024/width))/1024
-                by.append(im_y)
-                im_x = (511-int(v_x * 512/range_l))/512
-                bx.append(im_x)
-                im_w = w/512
+                im_x = (1023-int((v_y + (width/2))*1024/width))/1024
+                by.append(im_x)
+                im_y = (1023-int(v_x * 1024/range_l))/1024
+                bx.append(im_y)
+                im_w = w/width
                 bw.append(im_w)
-                im_l = le/1024
+                im_l = le/range_l
                 bl.append(im_l)
                 im_fy = fy
                 bf.append(im_fy)

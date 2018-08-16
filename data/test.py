@@ -1,7 +1,6 @@
-'''
-   这个文件是用来进行测试的，当获得雷达数据bin文件生成的图像文件后，用这个脚本将相机的txt文件所记录的物体坐标提取转换后变成图像坐标并绘制在生成的图像文件中，
-   如何可以框对，那么就说明转换没有问题
-'''
+#这个文件是用来进行测试的，当获得雷达数据bin文件生成的图像文件后，用这个脚本将相机的txt文件所记录的物体坐标提取转换后变成图像坐标并绘制在生成的图像文件中，
+#如何可以框对，那么就说明转换没有问题
+
 import os 
 import os.path
 import math
@@ -10,11 +9,11 @@ import pandas as pd
 import cv2
 
 width = 80
-range_l = 40
+range_l = 80
 
-file = "/home/zft/velodyne/label_test/000004.txt"
+file = "/home/zft/velodyne/label_test/000002.txt"
 lines = open(file).readlines()
-img = cv2.imread('/home/zft/velodyne/img/000004.png')
+img = cv2.imread('/home/zft/velodyne/img/000002.png')
 
 for line in lines:
     line = line.replace('\n', '')
@@ -48,15 +47,15 @@ for line in lines:
         y5 = - x
         #将雷达坐标转为图像坐标
         n1 = 1023-int((y1+(width/2))*1024/width)
-        m1 = 511-int(x1*512/range_l)
+        m1 = 1023-int(x1*1024/range_l)
         n2 = 1023-int((y2+(width/2))*1024/width)
-        m2 = 511-int(x2*512/range_l)
+        m2 = 1023-int(x2*1024/range_l)
         n3 = 1023-int((y3+(width/2))*1024/width)
-        m3 = 511-int(x3*512/range_l)
+        m3 = 1023-int(x3*1024/range_l)
         n4 = 1023-int((y4+(width/2))*1024/width)
-        m4 = 511-int(x4*512/range_l)
+        m4 = 1023-int(x4*1024/range_l)
         n5 = 1023-int((y5+(width/2))*1024/width)
-        m5 = 511-int(x5*512/range_l)
+        m5 = 1023-int(x5*1024/range_l)
         #四顶点连线
         img2 = cv2.line(img,(n1,m1),(n3,m3),(255,255,0))
         img2 = cv2.line(img,(n3,m3),(n2,m2),(255,255,0))
