@@ -195,7 +195,7 @@ class CostYoloV2(nn.Module):
             #get object , coords and classes loss    
             for t in range(50):
                 box_truth = truth_b[t, 0:4].view(4)
-                class_truth = int( truth_b[t, 4].view(1) )
+                class_truth = int( truth_b[t, 7].view(1) )
                 if box_truth[2] == 0.0 or box_truth[3] == 0.0:
                     break
                 best_iou = 0.0
@@ -235,8 +235,8 @@ class CostYoloV2(nn.Module):
                     self.recall += 1
                 self.iou += iou
                 #calculate the Euler loss
-                tim = box_truth[5]
-                tre = box_truth[6]
+                tim = truth_b[t, 5]
+                tre = truth_b[t, 6]
                 box_fy = Variable(torch.Tensor([tim,tre]).view(1,2))
                 if x.is_cuda:
                     box_fy = box_fy.cuda()
@@ -282,7 +282,7 @@ class CostYoloV2(nn.Module):
         if x.is_cuda:
             truth_obj = truth_obj.cuda()
         
-        pred_fy = torth.cat(euler_pred_list, 0)
+        pred_fy = torch.cat(euler_pred_list, 0)
         truth_fy = torch.cat(euler_truth_list, 0)
         truth_fy = truth_fy.detach()
         self.loss_fy = mse(pred_fy, truth_fy) * self.coord_scale 
